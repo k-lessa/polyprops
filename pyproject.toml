@@ -4,7 +4,7 @@ build-backend = "maturin"
 
 [project]
 name = "polyprops"
-version = "1.0.0"
+version = "1.0.1"
 authors = [
     { name = "Kyle Lessa" },
 ]
@@ -16,6 +16,9 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
 ]
+
+[project.urls]
+homepage = "https://github.com/k-lessa/polyprops"
 
 [tool.maturin]
 features = ["pyo3/extension-module"]
