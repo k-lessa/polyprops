@@ -1,0 +1,21 @@
+[build-system]
+requires = ["maturin>=1.3,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "polyprops"
+version = "1.0.0"
+authors = [
+    { name = "Kyle Lessa" },
+]
+description = "A Python package used for the analysis of polygon properties with a focus on performance."
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Rust",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+]
+
+[tool.maturin]
+features = ["pyo3/extension-module"]
