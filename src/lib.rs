@@ -182,12 +182,8 @@ fn polygon_centroid_internal(vertices: &Vec<f64>, area: Option<f64>) -> (f64, f6
 
     if min_x < 0.0 || min_y < 0.0 {
         let mut shifted_vertices = vertices.to_owned();
-        if min_x < 0.0 {
-            shift_x(&mut shifted_vertices, min_x.abs());
-        }
-        if min_y < 0.0 {
-            shift_y(&mut shifted_vertices, min_y.abs());
-        }
+        shift_x(&mut shifted_vertices, min_x.abs());
+        shift_y(&mut shifted_vertices, min_y.abs());
 
         // Compute the centroid of the shifted polygon. Then shift the centroid back.
         let (x, y) = centroid_algorithm(&shifted_vertices, area).unwrap();
@@ -241,7 +237,7 @@ mod tests {
     }
 
     #[test]
-    fn test_polygon_centroid_negative_vertices() {
+    fn test_polygon_centroid_negative_y_vertex() {
         let vertices = vec![0.0, 0.0, 1.0, 0.0, 1.0, -1.0];
         let (x, y) = polygon_centroid_internal(&vertices, None);
         assert!(isclose(x, 2.0 / 3.0));
@@ -249,8 +245,38 @@ mod tests {
     }
 
     #[test]
-    fn test_polygon_area_negative_vertices() {
+    fn test_polygon_area_negative_y_vertex() {
         let vertices = vec![0.0, 0.0, 1.0, 0.0, 1.0, -1.0];
         assert!(isclose(polygon_area_internal(&vertices), 0.5));
+    }
+
+    #[test]
+    fn test_polygon_centroid_negative_x_vertex() {
+        let vertices = vec![-1.0, 0.0, 0.0, 0.0, 0.0, 1.0];
+        let (x, y) = polygon_centroid_internal(&vertices, None);
+        assert!(isclose(x, -1.0 / 3.0));
+        assert!(isclose(y, 1.0 / 3.0));
+    }
+
+    #[test]
+    fn test_polygon_centroid_negative_x_vertex2() {
+        let vertices = vec![-1.0, 1.0, 1.0, 3.0, 3.0, 1.0];
+        let (x, y) = polygon_centroid_internal(&vertices, None);
+        assert!(isclose(x, 1.0));
+        assert!(isclose(y, 1.0 + 2.0 / 3.0));
+    }
+
+    #[test]
+    fn test_polygon_centroid_negative_vertices() {
+        let vertices = vec![-3.0, -2.0, -4.0, -3.0, -2.0, -3.0];
+        let (x, y) = polygon_centroid_internal(&vertices, None);
+        assert!(isclose(x, -3.0));
+        assert!(isclose(y, -2.0 - 2.0 / 3.0));
+    }
+
+    #[test]
+    fn test_polygon_area_negative_vertices() {
+        let vertices = vec![-3.0, -2.0, -4.0, -3.0, -2.0, -3.0];
+        assert!(isclose(polygon_area_internal(&vertices), 1.0));
     }
 }
